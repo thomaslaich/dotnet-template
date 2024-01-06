@@ -18,24 +18,13 @@
         devenv-up = self.devShells.${system}.default.config.procfileScript;
       });
 
-      # dg-cli-core = mkDerivation {
-      #   name = "dg-cli-core";
-      #   src = ./.;
-      #   buildInputs = [ devenv-up ];
-      #   installPhase = ''
-      #     mkdir -p $out/bin
-      #     cp -r ./bin $out/bin
-      #   '';
-      # };
-
       devShells = forEachSystem (system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-
+        let pkgs = nixpkgs.legacyPackages.${system};
 
         in {
           default = devenv.lib.mkShell {
             inherit inputs pkgs;
+
             modules = [{
               packages = with pkgs; [
                 cowsay
@@ -46,10 +35,12 @@
               ];
 
               enterShell = ''
+                export DOTNET_ROOT=${pkgs.dotnet-sdk_8}
                 cowsay "Welcome to .NET dev shell" | lolcat
               '';
 
               processes.run.exec = "hello";
+
             }];
           };
         });
