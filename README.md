@@ -28,7 +28,7 @@ This repo merely adds a nix flake that provides a development environment as wel
 
 ## Develop
 
-Then run:
+Simply run the following command from the root of the project:
 
 ```bash
 $ nix develop --impure
@@ -41,7 +41,8 @@ For even better ergonomics, install [direnv](https://direnv.net/) using your fav
 (Note that you might have to run `direnv allow` inside the directory once.)
 
 When using `vscode` or `emacs`, use the corresponding direnv extension:
-- [direnv for VSCode](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv).
+- [direnv for VSCode](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
+- [direnv for Rider](https://plugins.jetbrains.com/plugin/19275-better-direnv)
 - [direnv for Emacs](https://melpa.org/#/direnv)
 
 ## Restore
