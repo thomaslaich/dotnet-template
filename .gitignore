@@ -9,3 +9,6 @@ result-*
 # direnv / devenv
 .direnv
 .devenv
+
+# editors
+.vscode
