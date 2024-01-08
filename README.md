@@ -1,6 +1,6 @@
 # .NET nix template for multi-project repo
 
-Create .NET development environment quickly by simply running:
+Create .NET development environment quickly by running:
 
 ```bash
 $ nix flake init --template github:thomaslaich/dotnet-template
