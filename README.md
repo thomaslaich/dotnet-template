@@ -21,9 +21,9 @@ Tools used:
 
 ## Note
 
-The .NET code is taken from the book: [https://www.packtpub.com/product/c-12-and-net-8-modern-cross-platform-development-fundamentals-eighth-edition/9781837635870]
+The .NET code is taken from the book: [https://www.packtpub.com/product/c-12-and-net-8-modern-cross-platform-development-fundamentals-eighth-edition/9781837635870](C# 12 and .NET 8 – Modern Cross-Platform Development Fundamentals - Eighth Edition)
 
-The template repo can be found here: [https://github.com/markjprice/cs12dotnet8/tree/main/code/PracticalApps]
+The template repo can be found here: [https://github.com/markjprice/cs12dotnet8/tree/main/code/PracticalApps](https://github.com/markjprice/cs12dotnet8/tree/main/code/PracticalApps)
 
 This repo merely adds a nix flake that provides a development environment as well as packaged applications that can be run in isolation.
 
