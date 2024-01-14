@@ -21,7 +21,7 @@
       forEachSystem = nixpkgs.lib.genAttrs (import systems);
       mkApp = drv: name: {
         type = "app";
-        program = "${drv}/bin/${name}";
+        program = "${drv}/lib/${name}";
       };
 
     in {
@@ -117,8 +117,6 @@
 
             projectReferences = [ data-context entity-models ];
 
-            selfContainedBuild = true;
-
             dotnet-sdk = pkgs.dotnet-sdk_8;
             dotnet-runtime = pkgs.dotnet-runtime_8;
 
@@ -129,6 +127,7 @@
         });
 
       apps = forEachSystem (system: {
+        web = mkApp (self.packages.${system}.web) "Northwind.Web";
         webapi = mkApp (self.packages.${system}.webapi) "Northwind.WebApi";
         mvc = mkApp (self.packages.${system}.mvc) "Northwind.Mvc";
       });

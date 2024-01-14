@@ -10,3 +10,6 @@ restore:
     
 build APP:
     nix build .#{{APP}}
+    
+run APP:
+    (cd ./northwind.{{APP}} && nix run .#{{APP}})
