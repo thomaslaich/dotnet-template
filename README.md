@@ -21,7 +21,7 @@ Tools used:
 
 ## Note
 
-The .NET code is taken from the book: [https://www.packtpub.com/product/c-12-and-net-8-modern-cross-platform-development-fundamentals-eighth-edition/9781837635870](C# 12 and .NET 8 – Modern Cross-Platform Development Fundamentals - Eighth Edition)
+The .NET code is taken from the book: [C# 12 and .NET 8 – Modern Cross-Platform Development Fundamentals - Eighth Edition](https://www.packtpub.com/product/c-12-and-net-8-modern-cross-platform-development-fundamentals-eighth-edition/9781837635870)
 
 The template repo can be found here: [https://github.com/markjprice/cs12dotnet8/tree/main/code/PracticalApps](https://github.com/markjprice/cs12dotnet8/tree/main/code/PracticalApps)
 
