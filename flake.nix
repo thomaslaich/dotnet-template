@@ -3,6 +3,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
     devenv.url = "github:cachix/devenv";
+    nuget-packageslock2nix = {
+      url = "github:mdarocha/nuget-packageslock2nix/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -11,11 +15,122 @@
     extra-substituters = "https://devenv.cachix.org";
   };
 
-  outputs = { self, nixpkgs, devenv, systems, ... }@inputs:
-    let forEachSystem = nixpkgs.lib.genAttrs (import systems);
+  outputs =
+    { self, nixpkgs, devenv, systems, nuget-packageslock2nix, ... }@inputs:
+    let
+      forEachSystem = nixpkgs.lib.genAttrs (import systems);
+      mkApp = drv: name: {
+        type = "app";
+        program = "${drv}/bin/${name}";
+      };
+
     in {
-      packages = forEachSystem (system: {
-        devenv-up = self.devShells.${system}.default.config.procfileScript;
+      packages = forEachSystem (system:
+        let pkgs = import nixpkgs { inherit system; };
+        in rec {
+          devenv-up = self.devShells.${system}.default.config.procfileScript;
+
+          entity-models = pkgs.buildDotnetModule {
+            name = "northwind-entity-models";
+            src = ./northwind.entitymodels.sqlite;
+
+            nugetDeps = nuget-packageslock2nix.lib {
+              inherit system;
+              name = "northwind-entity-models";
+              lockfiles =
+                [ ./northwind.entitymodels.sqlite/packages.lock.json ];
+            };
+
+            dotnet-sdk = pkgs.dotnet-sdk_8;
+            dotnet-runtime = pkgs.dotnet-runtime_8;
+
+            packNupkg = true;
+          };
+
+          data-context = pkgs.buildDotnetModule {
+            name = "northwind-data-context";
+            src = ./northwind.datacontext.sqlite;
+
+            nugetDeps = nuget-packageslock2nix.lib {
+              inherit system;
+              name = "northwind-data-context";
+              lockfiles = [ ./northwind.datacontext.sqlite/packages.lock.json ];
+            };
+
+            projectReferences = [ entity-models ];
+
+            dotnet-sdk = pkgs.dotnet-sdk_8;
+            dotnet-runtime = pkgs.dotnet-runtime_8;
+
+            packNupkg = true;
+          };
+          
+          web = pkgs.buildDotnetModule {
+            name = "northwind-web";
+            src = ./northwind.web;
+
+            nugetDeps = nuget-packageslock2nix.lib {
+              inherit system;
+              name = "northwind-web";
+              lockfiles = [ ./northwind.web/packages.lock.json ];
+            };
+            
+            projectReferences = [ data-context entity-models ];
+
+            dotnet-sdk = pkgs.dotnet-sdk_8;
+            dotnet-runtime = pkgs.dotnet-runtime_8;
+
+            buildType = "Release";
+
+            executables = [ "Northwind.Web" ];
+          };
+
+          webapi = pkgs.buildDotnetModule {
+            name = "northwind-webapi";
+            src = ./northwind.webapi;
+
+            nugetDeps = nuget-packageslock2nix.lib {
+              inherit system;
+              name = "northwind-webapi";
+              lockfiles = [ ./northwind.webapi/packages.lock.json ];
+            };
+            
+            projectReferences = [ data-context entity-models ];
+
+            dotnet-sdk = pkgs.dotnet-sdk_8;
+            dotnet-runtime = pkgs.dotnet-runtime_8;
+
+            buildType = "Release";
+
+            executables = [ "Northwind.WebApi" ];
+          };
+
+          mvc = pkgs.buildDotnetModule {
+            name = "northwind-mvc";
+            src = ./northwind.mvc;
+
+            nugetDeps = nuget-packageslock2nix.lib {
+              inherit system;
+              name = "northwind-mvc";
+              lockfiles = [ ./northwind.mvc/packages.lock.json ];
+            };
+
+            projectReferences = [ data-context entity-models ];
+
+            selfContainedBuild = true;
+
+            dotnet-sdk = pkgs.dotnet-sdk_8;
+            dotnet-runtime = pkgs.dotnet-runtime_8;
+
+            buildType = "Release";
+
+            executables = [ "Northwind.Mvc" ];
+          };
+        });
+
+      apps = forEachSystem (system: {
+        webapi = mkApp (self.packages.${system}.webapi) "Northwind.WebApi";
+        mvc = mkApp (self.packages.${system}.mvc) "Northwind.Mvc";
       });
 
       devShells = forEachSystem (system:

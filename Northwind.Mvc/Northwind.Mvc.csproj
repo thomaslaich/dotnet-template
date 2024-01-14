@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Northwind.Mvc-5fff8afe-956b-4c4d-b7cd-ad8c61f69351</UserSecretsId>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,8 @@
 
   <ItemGroup>
     <!-- change Sqlite to SqlServer if you prefer -->
-    <ProjectReference Include="..\Northwind.DataContext.Sqlite\Northwind.DataContext.Sqlite.csproj" />
+    <ProjectReference Include="../northwind.datacontext.sqlite/Northwind.DataContext.Sqlite.csproj" />
+    <PackageReference Include="Northwind.DataContext.Sqlite" Version="*" Condition=" '$(ContinuousIntegrationBuild)'=='true' "/>
   </ItemGroup>
 
   <ItemGroup>

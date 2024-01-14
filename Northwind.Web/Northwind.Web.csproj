@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +12,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Northwind.DataContext.Sqlite\Northwind.DataContext.Sqlite.csproj" />
+    <ProjectReference Include="../northwind.datacontext.sqlite/Northwind.DataContext.Sqlite.csproj" />
+    <PackageReference Include="Northwind.DataContext.Sqlite" Version="*" Condition=" '$(ContinuousIntegrationBuild)'=='true' "/>
   </ItemGroup>
 
 </Project>

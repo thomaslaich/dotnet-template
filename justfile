@@ -8,5 +8,5 @@ fmt:
 restore:
     dotnet tool restore && dotnet restore
     
-build:
-    dotnet build
+build APP:
+    nix build .#{{APP}}

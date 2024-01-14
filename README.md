@@ -17,6 +17,7 @@ Tools used:
 - [Nix](https://srid.ca/haskell-nix) + [Flakes](https://serokell.io/blog/practical-nix-flakes)
 - [devenv](https://devenv.sh/) and [direnv](https://direnv.net/) for development shell
 - [just](https://just.systems/) as a task runner; run `just` in devshell
+- [nuget-packageslock2nix](https://github.com/mdarocha/nuget-packageslock2nix) for generating `nuget` dependency lock files for nix
 
 ## Note
 
@@ -40,14 +41,14 @@ with any system installations of .NET SDK or any other software).
 For even better ergonomics, install [direnv](https://direnv.net/) using your favourite package manager. After that, just `cd` into the directory.
 (Note that you might have to run `direnv allow` inside the directory once.)
 
-When using `vscode` or `emacs`, use the corresponding direnv extension:
+When using `vscode` or `emacs`, use the corresponding `direnv` extension:
 - [direnv for VSCode](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
 - [direnv for Rider](https://plugins.jetbrains.com/plugin/19275-better-direnv)
 - [direnv for Emacs](https://melpa.org/#/direnv)
 
 ## Restore
 
-To build the entire solution:
+To restore the entire solution (which creates `packages.lock.json` files that are also used for packaging):
 
 ```bash
 $ just restore
@@ -61,19 +62,26 @@ To build the entire solution:
 $ just build
 ```
 
+To build a single app, e.g., `mvc`:
+
+
+```bash
+$ just build mvc
+```
+
+Possible values are:
+
+- `entity-models` (for `Northwind.EntityModels.Sqlite`)
+- `data-context` (for `Northwind.DataContext.Sqlite`)
+- `web` (for `Northwind.Web`)
+- `webapi` (for `Northwind.WebApi`)
+- `mvc` (for `Northwind.Mvc`)
+
 ## Run an app
 
-To run an application:
+To run an application, e.g., `mvc`:
 
 ```bash
-$ just run <application-name>
+$ just run mvc
 ```
-e.g., to run the MVC application:
-```bash
-$ just run Northwind.Mvc
-```
-
-
-
-
 
