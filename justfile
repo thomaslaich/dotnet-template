@@ -3,7 +3,7 @@ default:
 
 # Autoformat the project tree
 fmt:
-    treefmt
+    nix fmt
     
 restore:
     dotnet tool restore && dotnet restore

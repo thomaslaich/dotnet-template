@@ -12,3 +12,6 @@ result-*
 
 # editors
 .vscode
+
+# log files
+northwindlog.txt
