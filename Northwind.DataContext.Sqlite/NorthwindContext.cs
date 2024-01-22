@@ -6,14 +6,10 @@ namespace Northwind.EntityModels;
 
 public partial class NorthwindContext : DbContext
 {
-    public NorthwindContext()
-    {
-    }
+    public NorthwindContext() { }
 
     public NorthwindContext(DbContextOptions<NorthwindContext> options)
-        : base(options)
-    {
-    }
+        : base(options) { }
 
     public virtual DbSet<Category> Categories { get; set; }
 
@@ -65,8 +61,13 @@ public partial class NorthwindContext : DbContext
 
             optionsBuilder.UseSqlite($"Data Source={path}");
 
-            optionsBuilder.LogTo(NorthwindContextLogger.WriteLine,
-                new[] { Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuted });
+            optionsBuilder.LogTo(
+                NorthwindContextLogger.WriteLine,
+                new[]
+                {
+                    Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuted
+                }
+            );
         }
     }
 
@@ -81,9 +82,15 @@ public partial class NorthwindContext : DbContext
         {
             entity.Property(e => e.Quantity).HasDefaultValue((short)1);
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails).OnDelete(DeleteBehavior.ClientSetNull);
+            entity
+                .HasOne(d => d.Order)
+                .WithMany(p => p.OrderDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails).OnDelete(DeleteBehavior.ClientSetNull);
+            entity
+                .HasOne(d => d.Product)
+                .WithMany(p => p.OrderDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Product>(entity =>

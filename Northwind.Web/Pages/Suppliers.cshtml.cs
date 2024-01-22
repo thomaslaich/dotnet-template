@@ -14,9 +14,7 @@ public class SuppliersModel(NorthwindContext db) : PageModel
     {
         ViewData["Title"] = "Northwind B2B - Suppliers";
 
-        Suppliers = _db.Suppliers
-            .OrderBy(s => s.Country)
-            .ThenBy(s => s.CompanyName);
+        Suppliers = _db.Suppliers.OrderBy(s => s.Country).ThenBy(s => s.CompanyName);
     }
 
     [BindProperty]
@@ -36,4 +34,3 @@ public class SuppliersModel(NorthwindContext db) : PageModel
         }
     }
 }
-

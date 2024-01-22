@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc.Formatters; // To use IOutputFormatter
 using Microsoft.Extensions.Caching.Memory;
 using Northwind.EntityModels;
 using Northwind.WebApi.Repositories;
 using Swashbuckle.AspNetCore.SwaggerUI; // To use SwaggerUIOptions
-using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,25 +19,28 @@ builder.Services.AddHttpLogging(options =>
 builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(new MemoryCacheOptions()));
 
 builder.Services.AddNorthwindContext();
-builder.Services.AddControllers(options =>
-{
-    WriteLine("Default output formatters:");
-    foreach (IOutputFormatter formatter in options.OutputFormatters)
+builder
+    .Services.AddControllers(options =>
     {
-        if (formatter is not OutputFormatter mediaFormatter)
+        WriteLine("Default output formatters:");
+        foreach (IOutputFormatter formatter in options.OutputFormatters)
         {
-            WriteLine($" {formatter.GetType().Name}");
+            if (formatter is not OutputFormatter mediaFormatter)
+            {
+                WriteLine($" {formatter.GetType().Name}");
+            }
+            else // OutputFormatter class has SupportedMediaTypes
+            {
+                WriteLine(
+                    " {0}, Media types: {1}",
+                    arg0: mediaFormatter.GetType().Name,
+                    arg1: string.Join(", ", mediaFormatter.SupportedMediaTypes)
+                );
+            }
         }
-        else // OutputFormatter class has SupportedMediaTypes
-        {
-            WriteLine(" {0}, Media types: {1}",
-              arg0: mediaFormatter.GetType().Name,
-              arg1: string.Join(", ", mediaFormatter.SupportedMediaTypes));
-        }
-    }
-})
-.AddXmlDataContractSerializerFormatters()
-.AddXmlSerializerFormatters();
+    })
+    .AddXmlDataContractSerializerFormatters()
+    .AddXmlSerializerFormatters();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -54,9 +57,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Northwind Service API v1");
-        c.SupportedSubmitMethods(new[] {
-            SubmitMethod.Get, SubmitMethod.Post,
-            SubmitMethod.Put, SubmitMethod.Delete });
+        c.SupportedSubmitMethods(
+            new[] { SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete }
+        );
     });
 }
 

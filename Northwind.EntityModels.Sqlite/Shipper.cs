@@ -8,18 +8,18 @@ namespace Northwind.EntityModels;
 
 public partial class Shipper
 {
-   [Key]
-   public int ShipperId { get; set; }
+    [Key]
+    public int ShipperId { get; set; }
 
-   [Required]
-   [Column(TypeName = "nvarchar (40)")]
-   [StringLength(40)]
-   public string CompanyName { get; set; } = null!;
+    [Required]
+    [Column(TypeName = "nvarchar (40)")]
+    [StringLength(40)]
+    public string CompanyName { get; set; } = null!;
 
-   [Column(TypeName = "nvarchar (24)")]
-   [StringLength(24)]
-   public string? Phone { get; set; }
+    [Column(TypeName = "nvarchar (24)")]
+    [StringLength(24)]
+    public string? Phone { get; set; }
 
-   [InverseProperty("ShipViaNavigation")]
-   public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    [InverseProperty("ShipViaNavigation")]
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

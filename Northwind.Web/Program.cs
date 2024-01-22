@@ -16,30 +16,32 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-  app.UseHsts();
+    app.UseHsts();
 }
 
-app.Use(async (HttpContext context, Func<Task> next) =>
-{
-  RouteEndpoint? rep = context.GetEndpoint() as RouteEndpoint;
-  
-  if (rep is not null)
-  {
-    WriteLine($"Endpoint name: {rep.DisplayName}");
-    WriteLine($"Endpoint route pattern: {rep.RoutePattern.RawText}");
-  }
-  
-  if (context.Request.Path == "/bonjour") 
-  {
-    await context.Response.WriteAsync("Bonjour Monde!");
-    return;
-  }
-  
-  // We could modify the request before calling the next delegate.
-  await next();
-  
-  // We could nodify the reponse after calling the next delegate.
-});
+app.Use(
+    async (HttpContext context, Func<Task> next) =>
+    {
+        RouteEndpoint? rep = context.GetEndpoint() as RouteEndpoint;
+
+        if (rep is not null)
+        {
+            WriteLine($"Endpoint name: {rep.DisplayName}");
+            WriteLine($"Endpoint route pattern: {rep.RoutePattern.RawText}");
+        }
+
+        if (context.Request.Path == "/bonjour")
+        {
+            await context.Response.WriteAsync("Bonjour Monde!");
+            return;
+        }
+
+        // We could modify the request before calling the next delegate.
+        await next();
+
+        // We could nodify the reponse after calling the next delegate.
+    }
+);
 
 app.UseHttpsRedirection();
 
