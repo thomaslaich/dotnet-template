@@ -18,6 +18,8 @@ Tools used:
 - [devenv](https://devenv.sh/) and [direnv](https://direnv.net/) for development shell
 - [just](https://just.systems/) as a task runner; run `just` in devshell
 - [nuget-packageslock2nix](https://github.com/mdarocha/nuget-packageslock2nix) for generating `nuget` dependency lock files for nix
+- [csharpier](https://github.com/belav/csharpier) for opinionated code formatting of C#
+- [treefmt](https://github.com/numtide/treefmt-nix) for formatting of all code on the pipeline (C# and nix)
 
 ## Note
 
