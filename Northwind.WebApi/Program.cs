@@ -19,6 +19,7 @@ builder.Services.AddHttpLogging(options =>
 builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(new MemoryCacheOptions()));
 
 builder.Services.AddNorthwindContext();
+
 builder
     .Services.AddControllers(options =>
     {

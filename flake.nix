@@ -69,6 +69,26 @@
             packNupkg = true;
           };
 
+          unit-tests = pkgs.buildDotnetModule {
+            name = "northwind-unit-tests";
+            src = ./northwind.unittests;
+
+            nugetDeps = nuget-packageslock2nix.lib {
+              inherit system;
+              name = "northwind-unit-tests";
+              lockfiles = [ ./northwind.unittests/packages.lock.json ];
+            };
+
+            projectReferences = [ entity-models data-context ];
+
+            dotnet-sdk = pkgs.dotnet-sdk_8;
+            dotnet-runtime = pkgs.dotnet-runtime_8;
+
+            buildType = "Release";
+
+            executables = [ "Northwind.UnitTests" ];
+          };
+
           web = pkgs.buildDotnetModule {
             name = "northwind-web";
             src = ./northwind.web;
@@ -160,12 +180,22 @@
           };
         });
 
-      formatter = forEachSystem (system:
-        let pkgs = import nixpkgs { inherit system; };
-        in treefmtEval.${pkgs.system}.config.build.wrapper);
+      formatter =
+        forEachSystem (system: treefmtEval.${system}.config.build.wrapper);
 
-      checks = forEachSystem (system:
-        let pkgs = import nixpkgs { inherit system; };
-        in { formatting = treefmtEval.${system}.config.build.check self; });
+      checks = forEachSystem (system: {
+        formatting = treefmtEval.${system}.config.build.check self;
+      });
+
+      templates = {
+        default = {
+          description = ''
+            Dotnet multi-project template for Northwind.
+
+            Includes a web app, a web api, and a mvc app.
+          '';
+          path = ./.;
+        };
+      };
     };
 }
