@@ -3,16 +3,16 @@ default:
 
 # Autoformat the project tree
 format:
-    dotnet tool restore && nix fmt
-    
+    nix fmt
+
 restore:
     dotnet tool restore && dotnet restore
-    
+
 build APP:
     nix build .#{{APP}}
 
 check:
     nix flake check --impure
-    
+
 run APP:
     (cd ./northwind.{{APP}} && nix run .#{{APP}})

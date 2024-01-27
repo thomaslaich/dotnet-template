@@ -3,8 +3,13 @@
   programs.nixfmt.enable = true;
   settings.formatter = {
     "csharpier" = {
-      command = "${pkgs.dotnet-sdk_8}/bin/dotnet";
-      options = [ "csharpier" ];
+      command = pkgs.writeShellApplication {
+        name = "csharpier-fix";
+        runtimeInputs = with pkgs; [ dotnet-sdk csharpier ];
+        text = ''
+          dotnet-csharpier "$@"
+        '';
+      };
       includes = [ "*.cs" ];
     };
   };
