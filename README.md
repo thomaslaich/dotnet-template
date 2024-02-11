@@ -1,10 +1,22 @@
-# .NET nix template for multi-project repo
+# .NET nix templates for multi-project repo
 
-Create .NET development environment quickly by running:
+Create .NET projects quickly using nix tooling for developing and building.
 
-```bash
-$ nix flake init --template github:thomaslaich/dotnet-template
-```
+Tools used:
+
+- [Nix](https://nixos.org/) + [Flakes](https://serokell.io/blog/practical-nix-flakes)
+- [devenv](https://devenv.sh/) and [direnv](https://direnv.net/) for development shell
+- [just](https://just.systems/) as a task runner; run `just` in devshell
+- [nuget-packageslock2nix](https://github.com/mdarocha/nuget-packageslock2nix) for generating `nuget` dependency lock files for nix
+- [csharpier](https://github.com/belav/csharpier) for opinionated code formatting of C#
+- [treefmt](https://github.com/numtide/treefmt-nix) for formatting of all code on the pipeline (C# and nix)
+
+## What this provides
+
+- [single-project](https://github.com/thomaslaich/dotnet-templates/single-project)
+- [multi-project](https://github.com/thomaslaich/dotnet-templates/multi-project)
+
+## Getting started
 
 If you don't have `nix` installed, run this first:
 
@@ -12,22 +24,20 @@ If you don't have `nix` installed, run this first:
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Tools used:
+To use the `single-project` template, simply run:
 
-- [Nix](https://srid.ca/haskell-nix) + [Flakes](https://serokell.io/blog/practical-nix-flakes)
-- [devenv](https://devenv.sh/) and [direnv](https://direnv.net/) for development shell
-- [just](https://just.systems/) as a task runner; run `just` in devshell
-- [nuget-packageslock2nix](https://github.com/mdarocha/nuget-packageslock2nix) for generating `nuget` dependency lock files for nix
-- [csharpier](https://github.com/belav/csharpier) for opinionated code formatting of C#
-- [treefmt](https://github.com/numtide/treefmt-nix) for formatting of all code on the pipeline (C# and nix)
+```bash
+$ nix flake init --template github:thomaslaich/dotnet-templates#single-project
+```
 
+Similarly, to use the `multi-project` template, simply run:
+
+```bash
+$ nix flake init --template github:thomaslaich/dotnet-templates#multi-project
+```
 ## Note
 
-The .NET code is taken from the book: [C# 12 and .NET 8 – Modern Cross-Platform Development Fundamentals - Eighth Edition](https://www.packtpub.com/product/c-12-and-net-8-modern-cross-platform-development-fundamentals-eighth-edition/9781837635870)
-
-The template repo can be found here: [https://github.com/markjprice/cs12dotnet8/tree/main/code/PracticalApps](https://github.com/markjprice/cs12dotnet8/tree/main/code/PracticalApps)
-
-This repo merely adds a nix flake that provides a development environment as well as packaged applications that can be run in isolation.
+Much of the .NET code is taken from the book: [C# 12 and .NET 8 – Modern Cross-Platform Development Fundamentals - Eighth Edition](https://www.packtpub.com/product/c-12-and-net-8-modern-cross-platform-development-fundamentals-eighth-edition/9781837635870)
 
 ## Develop
 
@@ -63,27 +73,4 @@ To build the entire solution:
 ```bash
 $ just build
 ```
-
-To build a single app, e.g., `mvc`:
-
-
-```bash
-$ just build mvc
-```
-
-Possible values are:
-
-- `entity-models` (for `Northwind.EntityModels.Sqlite`)
-- `data-context` (for `Northwind.DataContext.Sqlite`)
-- `web` (for `Northwind.Web`)
-- `webapi` (for `Northwind.WebApi`)
-- `mvc` (for `Northwind.Mvc`)
-
-## Run an app
-
-To run an application, e.g., `mvc`:
-
-```bash
-$ just run mvc
-```
-
+Other commands are more specific to the template used; please refer to the `README` for the particular template.
