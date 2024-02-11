@@ -23,9 +23,28 @@
       formatter =
         forEachSystem (system: treefmtEval.${system}.config.build.wrapper);
 
-      checks = forEachSystem (system: {
-        formatting = treefmtEval.${system}.config.build.check self;
-      });
+      checks = forEachSystem (system:
+        let pkgs = import nixpkgs { inherit system; };
+        in {
+          formatting = treefmtEval.${system}.config.build.check self;
+          unit-tests = pkgs.stdenv.mkDerivation {
+            name = "northwind-unittests";
+            src = ./.;
+            nativeBuildInputs = with pkgs; [ dotnet-sdk_8 ];
+            buildInputs = with pkgs; [ dotnet-sdk_8 ];
+            doCheck = true;
+            checkPhase = ''
+              dotnet test
+            '';
+
+            buildPhase = ''
+              # make compile
+            '';
+            installPhase = ''
+              mkdir -p $out/bin
+            '';
+          };
+        });
 
       templates = {
         single-project = {
