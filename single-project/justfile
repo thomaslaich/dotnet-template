@@ -1,0 +1,18 @@
+default:
+    @just --list
+
+# Autoformat the project tree
+format:
+    nix fmt
+
+restore:
+    dotnet tool restore && dotnet restore
+
+build:
+    nix build
+
+check:
+    nix flake check --impure
+
+run:
+    (cd ./helloworld && nix run)
