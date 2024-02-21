@@ -14,9 +14,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        shell: devenv shell bash -e {0}
 
     steps:
     - uses: actions/checkout@v4
@@ -28,16 +25,21 @@ jobs:
       run: nix profile install --accept-flake-config tarball+https://install.devenv.sh/latest
 
     - name: Build the devenv shell and run any pre-commit hooks
+      shell: devenv shell bash -e {0}
       run: devenv ci
 
     - name: flake check
+      shell: devenv shell bash -e {0}
       run: just check
 
     - name: Run formatting
+      shell: devenv shell bash -e {0}
       run: just format
 
     - name: Run linting
+      shell: devenv shell bash -e {0}
       run: just lint
 
     - name: Run tests
+      shell: devenv shell bash -e {0}
       run: just test
