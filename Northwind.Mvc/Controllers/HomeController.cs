@@ -45,7 +45,8 @@ public class HomeController(ILogger<HomeController> logger, NorthwindContext db)
             );
         }
 
-        Product? model = _db.Products.Include(p => p.Category)
+        Product? model = _db
+            .Products.Include(p => p.Category)
             .SingleOrDefault(p => p.ProductId == id);
 
         if (model is null)

@@ -7,5 +7,11 @@ trim_trailing_whitespace = true
 # Configurable behaviors
 # end_of_line = lf - there is no 'auto' with a .editorconfig
 indent_style = space
+
+[*.csproj]
+indent_size = 2
+max_line_length = 150
+
+[*.cs]
 indent_size = 4
 max_line_length = 100

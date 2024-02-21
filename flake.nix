@@ -145,8 +145,10 @@
 
             modules = [{
               packages = with pkgs; [
+                # Welcome screen
                 cowsay
                 lolcat
+
                 just # task runner
                 sqlite # sqlite3 db for now
                 dotnet-sdk_8 # .NET SDK version 8
