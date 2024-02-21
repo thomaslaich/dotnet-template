@@ -8,16 +8,15 @@ on:
     branches:
       - master
 
-defaults:
-  run:
-    shell: devenv shell bash -e {0}
-
 jobs:
   tests:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: devenv shell bash -e {0}
 
     steps:
     - uses: actions/checkout@v4
