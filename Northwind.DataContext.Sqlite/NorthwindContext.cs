@@ -65,7 +65,7 @@ public partial class NorthwindContext : DbContext
                 NorthwindContextLogger.WriteLine,
                 new[]
                 {
-                    Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuted
+                    Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuted,
                 }
             );
         }

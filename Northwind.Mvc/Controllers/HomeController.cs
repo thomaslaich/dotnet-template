@@ -13,12 +13,11 @@ public class HomeController(ILogger<HomeController> logger, NorthwindContext db)
 
     public IActionResult Index()
     {
-        HomeIndexViewModel model =
-            new(
-                VisitorCount: Random.Shared.Next(1, 1001),
-                Categories: _db.Categories.ToList(),
-                Products: _db.Products.ToList()
-            );
+        HomeIndexViewModel model = new(
+            VisitorCount: Random.Shared.Next(1, 1001),
+            Categories: _db.Categories.ToList(),
+            Products: _db.Products.ToList()
+        );
 
         return View(model);
     }

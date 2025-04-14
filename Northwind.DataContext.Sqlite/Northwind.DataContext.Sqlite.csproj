@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <PackageId>Northwind.DataContext.Sqlite</PackageId>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Version="8.0.0" Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Version="9.0.4" Include="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
 
   <ItemGroup>

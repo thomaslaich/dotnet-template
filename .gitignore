@@ -1,6 +1,7 @@
 # build artifacts
 obj/
 bin/
+out/
 
 # nix
 result

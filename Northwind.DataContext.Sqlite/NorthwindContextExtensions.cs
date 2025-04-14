@@ -37,7 +37,11 @@ public static class NorthwindContextExtensions
                     NorthwindContextLogger.WriteLine,
                     new[]
                     {
-                        Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuting
+                        Microsoft
+                            .EntityFrameworkCore
+                            .Diagnostics
+                            .RelationalEventId
+                            .CommandExecuting,
                     }
                 );
             },

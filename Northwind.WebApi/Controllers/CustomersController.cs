@@ -112,15 +112,14 @@ public class CustomersController : ControllerBase
     {
         if (id == "bad")
         {
-            ProblemDetails problemDetails =
-                new()
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Type = "https://localhost:5151/customers/failed-to-delete",
-                    Title = $"Customer ID {id} found but failed to delete.",
-                    Detail = "More details like Company Name, Country, etc.",
-                    Instance = HttpContext.Request.Path
-                };
+            ProblemDetails problemDetails = new()
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://localhost:5151/customers/failed-to-delete",
+                Title = $"Customer ID {id} found but failed to delete.",
+                Detail = "More details like Company Name, Country, etc.",
+                Instance = HttpContext.Request.Path,
+            };
             return BadRequest(problemDetails);
         }
         id = id.ToUpper();
