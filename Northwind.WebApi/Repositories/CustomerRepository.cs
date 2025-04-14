@@ -9,8 +9,10 @@ public class CustomerRepository : ICustomerRepository
 {
     private readonly IMemoryCache _memoryCache;
 
-    private readonly MemoryCacheEntryOptions _cacheEntryOptions =
-        new() { SlidingExpiration = TimeSpan.FromMinutes(30) };
+    private readonly MemoryCacheEntryOptions _cacheEntryOptions = new()
+    {
+        SlidingExpiration = TimeSpan.FromMinutes(30),
+    };
 
     private readonly NorthwindContext _db;
 

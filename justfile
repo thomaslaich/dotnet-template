@@ -6,7 +6,7 @@ format:
     nix fmt
 
 restore:
-    dotnet tool restore && dotnet restore
+    restore
 
 build APP:
     nix build .#{{APP}}

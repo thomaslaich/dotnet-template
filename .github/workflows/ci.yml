@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches:
@@ -7,38 +6,31 @@ on:
   pull_request:
     branches:
       - master
-
 jobs:
   tests:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-
     steps:
-    - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v23
-    - uses: cachix/cachix-action@v12
-      with:
-        name: devenv
-    - name: Install devenv.sh
-      run: nix profile install --accept-flake-config tarball+https://install.devenv.sh/latest
-
-    - name: Build the devenv shell and run any pre-commit hooks
-      run: devenv ci
-
-    - name: flake check
-      shell: devenv shell bash -e {0}
-      run: just check
-
-    - name: Run formatting
-      shell: devenv shell bash -e {0}
-      run: just format
-
-    - name: Run linting
-      shell: devenv shell bash -e {0}
-      run: just lint
-
-    - name: Run tests
-      shell: devenv shell bash -e {0}
-      run: just test
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
+      - uses: cachix/cachix-action@v12
+        with:
+          name: devenv
+      - name: Install devenv.sh
+        run: nix profile install --accept-flake-config tarball+https://install.devenv.sh/latest
+      - name: Build the devenv shell and run any pre-commit hooks
+        run: devenv ci
+      - name: flake check
+        shell: devenv shell bash -e {0}
+        run: just check
+      - name: Run formatting
+        shell: devenv shell bash -e {0}
+        run: just format
+      - name: Run linting
+        shell: devenv shell bash -e {0}
+        run: just lint
+      - name: Run tests
+        shell: devenv shell bash -e {0}
+        run: just test
