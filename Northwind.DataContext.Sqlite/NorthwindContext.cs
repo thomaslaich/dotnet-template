@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,9 +39,9 @@ public partial class NorthwindContext : DbContext
             string dir = Environment.CurrentDirectory;
             string path = string.Empty;
 
-            if (dir.EndsWith("net8.0"))
+            if (dir.EndsWith("net9.0"))
             {
-                // In the <project>/bin/<Debug|Release>/net8.0 directory.
+                // In the <project>/bin/<Debug|Release>/net9.0 directory.
                 path = Path.Combine("..", "..", "..", "..", database);
             }
             else

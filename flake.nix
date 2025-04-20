@@ -35,106 +35,45 @@
         system:
         let
           pkgs = import nixpkgs { inherit system; };
+          dotnet-sdk = pkgs.dotnet-sdk_9;
+          dotnet-runtime = pkgs.dotnet-runtime_9;
+
         in
 
         rec {
           devenv-up = self.devShells.${system}.default.config.procfileScript;
 
-          entity-models = pkgs.buildDotnetModule {
-            name = "northwind-entity-models";
-            src = ./northwind.entitymodels.sqlite;
-
-            nugetDeps = ./deps.json;
-
-            dotnet-sdk = pkgs.dotnet-sdk_9;
-            dotnet-runtime = pkgs.dotnet-runtime_9;
-
-            packNupkg = true;
+          web = import ./northwind.web/package.nix {
+            inherit pkgs dotnet-sdk dotnet-runtime;
           };
 
-          data-context = pkgs.buildDotnetModule {
-            name = "northwind-data-context";
-            src = ./northwind.datacontext.sqlite;
-
-            nugetDeps = ./deps.json;
-
-            projectReferences = [ entity-models ];
-
-            dotnet-sdk = pkgs.dotnet-sdk_9;
-            dotnet-runtime = pkgs.dotnet-runtime_9;
-
-            packNupkg = true;
+          webapi = import ./northwind.webapi/package.nix {
+            inherit pkgs dotnet-sdk dotnet-runtime;
           };
 
-          web = pkgs.buildDotnetModule {
-            name = "northwind-web";
-            src = ./northwind.web;
-
-            nugetDeps = ./deps.json;
-
-            projectReferences = [
-              data-context
-              entity-models
-            ];
-
-            dotnet-sdk = pkgs.dotnet-sdk_9;
-            dotnet-runtime = pkgs.dotnet-runtime_9;
-
-            buildType = "Release";
-
-            executables = [ "Northwind.Web" ];
+          mvc = import ./northwind.mvc/package.nix {
+            inherit pkgs dotnet-sdk dotnet-runtime;
           };
 
-          webapi = pkgs.buildDotnetModule {
-            name = "northwind-webapi";
-            src = ./northwind.webapi;
-
-            nugetDeps = ./deps.json;
-
-            projectReferences = [
-              data-context
-              entity-models
-            ];
-
-            dotnet-sdk = pkgs.dotnet-sdk_9;
-            dotnet-runtime = pkgs.dotnet-runtime_9;
-
-            buildType = "Release";
-
-            executables = [ "Northwind.WebApi" ];
-          };
-
-          mvc = pkgs.buildDotnetModule {
-            name = "northwind-mvc";
-            src = ./northwind.mvc;
-
-            nugetDeps = ./deps.json;
-
-            projectReferences = [
-              data-context
-              entity-models
-            ];
-
-            dotnet-sdk = pkgs.dotnet-sdk_9;
-            dotnet-runtime = pkgs.dotnet-runtime_9;
-
-            buildType = "Release";
-
-            executables = [ "Northwind.Mvc" ];
-          };
         }
       );
 
       apps = forEachSystem (system: {
-        web = mkApp (self.packages.${system}.web) "Northwind.Web";
-        webapi = mkApp (self.packages.${system}.webapi) "Northwind.WebApi";
-        mvc = mkApp (self.packages.${system}.mvc) "Northwind.Mvc";
+        web = mkApp self.packages.${system}.web "Northwind.Web";
+        webapi = mkApp self.packages.${system}.webapi "Northwind.WebApi";
+        mvc = mkApp self.packages.${system}.mvc "Northwind.Mvc";
       });
 
       devShells = forEachSystem (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          dotnet-sdk =
+            with pkgs.dotnetCorePackages;
+            combinePackages [
+              sdk_9_0-bin
+              sdk_8_0-bin
+            ];
 
         in
         {
@@ -150,7 +89,7 @@
 
                   just # task runner
                   sqlite # sqlite3 db for now
-                  dotnet-sdk_9 # .NET SDK version 9
+                  dotnet-sdk
 
                   nuget-to-json
                 ];
@@ -163,7 +102,7 @@
                 '';
 
                 enterShell = ''
-                  export DOTNET_ROOT=${pkgs.dotnet-sdk_9}/share/dotnet
+                  export DOTNET_ROOT=${dotnet-sdk}/share/dotnet
                   cowsay "Welcome to .NET dev shell" | lolcat
                 '';
               }
@@ -178,25 +117,14 @@
         system:
         let
           pkgs = import nixpkgs { inherit system; };
+          dotnet-sdk = pkgs.dotnet-sdk_9;
+          dotnet-runtime = pkgs.dotnet-runtime_9;
+
         in
         {
           formatting = treefmtEval.${system}.config.build.check self;
-          unit-tests = pkgs.stdenv.mkDerivation {
-            name = "northwind-unittests";
-            src = ./.;
-            nativeBuildInputs = with pkgs; [ dotnet-sdk_9 ];
-            buildInputs = with pkgs; [ dotnet-sdk_9 ];
-            doCheck = true;
-            checkPhase = ''
-              dotnet test
-            '';
-
-            buildPhase = ''
-              # make compile
-            '';
-            installPhase = ''
-              mkdir -p $out/bin
-            '';
+          unittests = import ./northwind.unittests/package.nix {
+            inherit pkgs dotnet-sdk dotnet-runtime;
           };
         }
       );

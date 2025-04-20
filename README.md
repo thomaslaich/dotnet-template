@@ -17,7 +17,6 @@ Tools used:
 - [Nix](https://srid.ca/haskell-nix) + [Flakes](https://serokell.io/blog/practical-nix-flakes)
 - [devenv](https://devenv.sh/) and [direnv](https://direnv.net/) for development shell
 - [just](https://just.systems/) as a task runner; run `just` in devshell
-- [nuget-packageslock2nix](https://github.com/mdarocha/nuget-packageslock2nix) for generating `nuget` dependency lock files for nix
 - [csharpier](https://github.com/belav/csharpier) for opinionated code formatting of C#
 - [treefmt](https://github.com/numtide/treefmt-nix) for formatting of all code on the pipeline (C# and nix)
 
@@ -37,11 +36,11 @@ Simply run the following command from the root of the project:
 $ nix develop --impure
 ```
 
-This will install a .NET SDK in version 8 and all other required dependencies in a completely isolated way (they will not interfere
+This will install a .NET SDK in version 9 and all other required dependencies in a completely isolated way (they will not interfere
 with any system installations of .NET SDK or any other software).
 
-For even better ergonomics, install [direnv](https://direnv.net/) using your favourite package manager. After that, just `cd` into the directory.
-(Note that you might have to run `direnv allow` inside the directory once.)
+For even better ergonomics, install [direnv](https://direnv.net/) using your favourite package manager. After that, just `cd` into the directory
+and run `direnv allow` to enable the automatic shell hook.
 
 When using `vscode` or `emacs`, use the corresponding `direnv` extension:
 - [direnv for VSCode](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
